@@ -1,0 +1,33 @@
+result = []
+def divider(a, b):
+    try:
+        if a < b:
+            raise ValueError("a must be greater than or equal to b")
+        if b > 100:
+            raise IndexError("b must be less than or equal to 100")
+        return a / b
+
+    except ZeroDivisionError:
+        print("Division by zero!")
+    except TypeError:
+        print("Unsupported operand types for /")
+    except ValueError as e:
+        print(f"ValueError: {e}")
+    except IndexError as e:
+        print(f"IndexError: {e}")
+    except Exception as e:
+        print(f"An error: {e}")
+
+data = {10: 2, 2: 5, "123": 4, 18: 0, (5, 2): 15, 8: 4}
+
+for key in data:
+    try:
+        if isinstance(key, (int, float)) and isinstance(data[key], (int, float)):
+            res = divider(key, data[key])
+            if res is not None:
+                result.append(res)
+        else:
+            print(f"Key '{key}' or its value '{data[key]}' is not a number")
+    except KeyError:
+        print(f"Key '{key}' not found in dictionary")
+print(result)
