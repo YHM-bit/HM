@@ -1,0 +1,33 @@
+def calculator_decorator(function):
+    def wrapper(*args, **kwargs):
+        try:
+            result = function(*args, **kwargs)
+            print(f"Result: {result}")
+            return result
+        except ZeroDivisionError:
+            print("Error: Division by zero is not allowed.")
+        except SyntaxError:
+            print("Error: There is a syntax error in your expression.")
+        except NameError:
+            print("Error: Invalid characters or variables in your expression.")
+        except Exception as e:
+            print(f"Error: {str(e)}")
+    return wrapper
+
+@calculator_decorator
+def calculate(expression):
+    return eval(expression)
+
+def test_calculator():
+    print("Test 1: Correct expression '4 + 6 * 2'")
+    calculate("4 + 6 * 2")
+    print("\nTest 2: Division by zero '3 / 0'")
+    calculate("3 / 0")
+    print("\nTest 3: Invalid syntax '5 + 2'")
+    calculate("5 + 2")
+    print("\nTest 4: Invalid characters '8 + abc'")
+    calculate("8 + abc")
+    print("\nTest 5: Complex expression '(5 + 2) * (4 - 3) / 7'")
+    calculate("(5 + 2) * (4 - 3) / 7")
+
+test_calculator()
