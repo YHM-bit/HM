@@ -1,0 +1,28 @@
+import sqlite3
+import requests
+import datetime
+
+
+def get_temperature(city):
+    url = (f"https://ua.sinoptik.ua/погода-{city}")
+    response = requests.get(url)
+    html = response.text
+    start = html.find('class="today-temp"')
+    temp = html[start:start + 50]
+    temp_value = temp.split('>')[1].split('<')[0]
+
+    return float(temp_value.replace('°', ''))
+
+
+conn = sqlite3.connect('weather_data.db')
+cursor = conn.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS weather (datetime TEXT,temperature REAL)''')
+now = datetime.datetime.now()
+current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+city = ("kyiv")
+temperature = get_temperature(city)
+cursor.execute("INSERT INTO weather (datetime, temperature) VALUES (?, ?)", (current_time, temperature))
+conn.commit()
+conn.close()
+
+print("Дані про погоду успішно додано до бази даних.")
