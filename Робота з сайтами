@@ -1,0 +1,10 @@
+import requests
+
+url = ("https://ua.sinoptik.ua/погода-київ")
+response = requests.get(url)
+html = response.text
+start = html.find('class="today-temp"')
+temp = html[start:start+50]
+temp_value = temp.split('>')[1].split('<')[0]
+
+print(f"Температура зараз: {temp_value}")
